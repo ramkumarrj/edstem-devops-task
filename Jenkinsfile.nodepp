@@ -20,7 +20,6 @@ pipeline {
                         // withCredentials script generator of Jenkins
                         withCredentials([file(credentialsId: 'gcloud-service-account', variable: 'GCLOUD_CREDENTIALS_FILE')]) {
                             sh ''' gcloud auth activate-service-account --key-file="$GCLOUD_CREDENTIALS_FILE" 
-                                   echo $GCLOUD_CREDENTIALS_FILE
                                    gcloud container clusters get-credentials eds-devops-task-eds-gke --region europe-central2 --project edstem-task                                   
                             '''
                         }
@@ -37,11 +36,11 @@ pipeline {
                     Docker_Build_Push= "${readProb['Docker_Build_Push']}"
                     if ("$Docker_Build_Push" == "yes") {
                         sh ''' 
-                            sudo docker rmi europe-central2-docker.pkg.dev/edstem-task/expressjsapp/gcpnodeapp:latest || true
-                            sudo docker build -t europe-central2-docker.pkg.dev/edstem-task/expressjsapp/gcpnodeapp:latest -f DockerFile.mynodeapp .           
-                            sudo docker tag europe-central2-docker.pkg.dev/edstem-task/expressjsapp/gcpnodeapp:latest europe-central2-docker.pkg.dev/edstem-task/expressjsapp/gcpnodeapp:$BUILD_NUMBER 
-                            sudo docker push europe-central2-docker.pkg.dev/edstem-task/expressjsapp/gcpnodeapp:$BUILD_NUMBER                             
-                            sudo docker rmi europe-central2-docker.pkg.dev/edstem-task/expressjsapp/gcpnodeapp:$BUILD_NUMBER              
+                            docker rmi europe-central2-docker.pkg.dev/edstem-task/expressjsapp/gcpnodeapp:latest || true
+                            docker build -t europe-central2-docker.pkg.dev/edstem-task/expressjsapp/gcpnodeapp:latest -f DockerFile.mynodeapp .           
+                            docker tag europe-central2-docker.pkg.dev/edstem-task/expressjsapp/gcpnodeapp:latest europe-central2-docker.pkg.dev/edstem-task/expressjsapp/gcpnodeapp:$BUILD_NUMBER 
+                            docker push europe-central2-docker.pkg.dev/edstem-task/expressjsapp/gcpnodeapp:$BUILD_NUMBER                             
+                            docker rmi europe-central2-docker.pkg.dev/edstem-task/expressjsapp/gcpnodeapp:$BUILD_NUMBER              
                             '''
                     } else {
                         echo "Docker_Build_and_Push_Skipped"
