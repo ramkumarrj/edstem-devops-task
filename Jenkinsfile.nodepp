@@ -38,7 +38,7 @@ pipeline {
                         sh ''' 
                             sudo docker rmi europe-central2-docker.pkg.dev/edstem-task/expressjsapp/gcpnodeapp:latest || true
                             sudo docker build -t europe-central2-docker.pkg.dev/edstem-task/expressjsapp/gcpnodeapp:latest -f DockerFile.mynodeapp .           
-                            docker tag europe-central2-docker.pkg.dev/edstem-task/expressjsapp/gcpnodeapp:latest europe-central2-docker.pkg.dev/edstem-task/expressjsapp/gcpnodeapp:$BUILD_NUMBER 
+                            sudo docker tag europe-central2-docker.pkg.dev/edstem-task/expressjsapp/gcpnodeapp:latest europe-central2-docker.pkg.dev/edstem-task/expressjsapp/gcpnodeapp:$BUILD_NUMBER 
                             docker push europe-central2-docker.pkg.dev/edstem-task/expressjsapp/gcpnodeapp:$BUILD_NUMBER                             
                             sudo docker rmi europe-central2-docker.pkg.dev/edstem-task/expressjsapp/gcpnodeapp:$BUILD_NUMBER              
                             '''
