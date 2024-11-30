@@ -5,16 +5,16 @@ FROM node:20
 WORKDIR /usr/src/app
 
 # Clone the repository
-COPY myapp/package.json .
+COPY ./myapp/package.json .
 
 # Install the application dependencies
 RUN npm install
 
 # Copy Remaining Code
-COPY myapp/* .
+COPY ./myapp/* .
 
 # Update .env Variable
-RUN cp myapp/env .env
+RUN cp ./myapp/env .env
 
 
 # Expose the application port (assuming app.js uses port 3000)
