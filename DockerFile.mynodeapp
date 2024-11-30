@@ -14,7 +14,7 @@ RUN npm install
 COPY ./myapp/* .
 
 # Update .env Variable
-RUN cp ./myapp/env .env
+COPY ./myapp/env .env
 
 
 # Expose the application port (assuming app.js uses port 3000)
