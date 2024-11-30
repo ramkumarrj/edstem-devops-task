@@ -7,7 +7,7 @@ pipeline {
     stages {
         stage('SCM_Checkout_For_nodeapp') { 
             steps {
-                checkout scmGit(branches: [[name: '*/dev']], extensions: [], userRemoteConfigs: [[credentialsId: 'e00049-gitlab-nodeapp', url: 'http://34.30.194.3/e00049/devops.git']])
+                checkout scmGit(branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[credentialsId: 'ramkumar-github-nodeapp', url: 'https://github.com/ramkumarrj/edstem-devops-task.git']])
             }
         }
         stage('Google Cloud Authentication') {
