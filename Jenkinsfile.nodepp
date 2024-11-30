@@ -36,11 +36,11 @@ pipeline {
                     Docker_Build_Push= "${readProb['Docker_Build_Push']}"
                     if ("$Docker_Build_Push" == "yes") {
                         sh ''' 
-                            docker rmi europe-central2-docker.pkg.dev/edstem-task/expressjsapp/gcpnodeapp:latest || true
-                            docker build -t europe-central2-docker.pkg.dev/edstem-task/expressjsapp/gcpnodeapp:latest -f DockerFile.mynodeapp .           
+                            sudo docker rmi europe-central2-docker.pkg.dev/edstem-task/expressjsapp/gcpnodeapp:latest || true
+                            sudo docker build -t europe-central2-docker.pkg.dev/edstem-task/expressjsapp/gcpnodeapp:latest -f DockerFile.mynodeapp .           
                             docker tag europe-central2-docker.pkg.dev/edstem-task/expressjsapp/gcpnodeapp:latest europe-central2-docker.pkg.dev/edstem-task/expressjsapp/gcpnodeapp:$BUILD_NUMBER 
                             docker push europe-central2-docker.pkg.dev/edstem-task/expressjsapp/gcpnodeapp:$BUILD_NUMBER                             
-                            docker rmi europe-central2-docker.pkg.dev/edstem-task/expressjsapp/gcpnodeapp:$BUILD_NUMBER              
+                            sudo docker rmi europe-central2-docker.pkg.dev/edstem-task/expressjsapp/gcpnodeapp:$BUILD_NUMBER              
                             '''
                     } else {
                         echo "Docker_Build_and_Push_Skipped"
