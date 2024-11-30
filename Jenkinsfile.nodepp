@@ -1,0 +1,84 @@
+def readProb;
+pipeline {
+    agent any
+    environment {
+        GCLOUD_CREDENTIALS = credentials('gcloud-service-account')        
+    }
+    stages {
+        stage('SCM_Checkout_For_nodeapp') { 
+            steps {
+                checkout scmGit(branches: [[name: '*/dev']], extensions: [], userRemoteConfigs: [[credentialsId: 'e00049-gitlab-nodeapp', url: 'http://34.30.194.3/e00049/devops.git']])
+            }
+        }
+        stage('Google Cloud Authentication') {
+            steps {
+                script {
+                    readProb = readProperties  file:'config.properties'
+                    GCloud_Auth= "${readProb['GCloud_Auth']}"
+                    
+                    if (GCloud_Auth == 'yes') {
+                        // withCredentials script generator of Jenkins
+                        withCredentials([file(credentialsId: 'gcloud-service-account', variable: 'GCLOUD_CREDENTIALS_FILE')]) {
+                            sh ''' gcloud auth activate-service-account --key-file="$GCLOUD_CREDENTIALS_FILE" 
+                                   gcloud container clusters get-credentials eds-devops-task-eds-gke --region europe-central2 --project edstem-task                                   
+                            '''
+                        }
+                    } else {
+                        echo "Google Cloud Authentication Skipped"http://34.118.9.210:8080/
+                    }
+                }
+            }
+        }   
+        stage('Docker_Build_and_Push') {
+            steps {
+                script {
+                    readProb = readProperties  file:'config.properties'
+                    Docker_Build_Push= "${readProb['Docker_Build_Push']}"
+                    if ("$Docker_Build_Push" == "yes") {
+                        sh ''' 
+                            sudo docker rmi europe-central2-docker.pkg.dev/edstem-task/expressjsapp/gcpnodeapp:latest || true
+                            sudo docker build -t europe-central2-docker.pkg.dev/edstem-task/expressjsapp/gcpnodeapp:latest -f DockerFile.mynodeapp .           
+                            sudo docker tag europe-central2-docker.pkg.dev/edstem-task/expressjsapp/gcpnodeapp:latest europe-central2-docker.pkg.dev/edstem-task/expressjsapp/gcpnodeapp:$BUILD_NUMBER 
+                            sudo docker push europe-central2-docker.pkg.dev/edstem-task/expressjsapp/gcpnodeapp:$BUILD_NUMBER                             
+                            sudo docker rmi europe-central2-docker.pkg.dev/edstem-task/expressjsapp/gcpnodeapp:$BUILD_NUMBER              
+                            '''
+                    } else {
+                        echo "Docker_Build_and_Push_Skipped"
+                    }
+                }            
+            }
+        }
+        
+        stage('Fresh_Deployment_Kubernetes_nodeapp') {
+            steps {
+                script {
+                    readProb = readProperties  file:'config.properties'
+                    Fresh_Deploy_nodeapp= "${readProb['Fresh_Deploy_nodeapp']}"
+                    
+                    if (Fresh_Deploy_nodeapp == 'yes') {
+                        sh '''
+                            sed -i s/latest/$BUILD_NUMBER/g kubernetes/deployment.yaml
+                            kubectl apply -f kubernetes/
+                        '''
+                    } else {
+                        echo "Fresh-Deployment-Skipped"
+                    }
+                }
+            }
+        }
+        stage('Update_Deployment_Kubernetes_nodeapp') {
+            steps {
+                script {
+                    readProb = readProperties  file:'config.properties'
+                    Update_Deploy_nodeapp= "${readProb['Update_Deploy_nodeapp']}"
+                    
+                    if (Update_Deploy_nodeapp == 'yes') {
+                        sh ''' kubectl set image deployment/gcpnodeapp-deployment gcpnodeapp=europe-central2-docker.pkg.dev/edstem-task/expressjsapp/gcpnodeapp:$BUILD_NUMBER '''
+                    } else {
+                        echo "Update-Deployment-Skipped"
+                    }
+                }
+            }
+        }        
+    }
+}

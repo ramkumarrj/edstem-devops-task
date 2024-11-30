@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gcpnodeapp-deployment
+  labels:
+    app: gcpnodeapp
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: gcpnodeapp
+  template:
+    metadata:
+      labels:
+        app: gcpnodeapp
+    spec:
+      containers:
+      - name: gcpnodeapp
+        image: europe-central2-docker.pkg.dev/edstem-task/expressjsapp/gcpnodeapp:latest
+        ports:
+        - containerPort: 3000
+        
+        # Resource requests and limits
+        resources:
+          requests:
+            memory: "12Mi"
+            cpu: "12m"
+          limits:
+            memory: "24Mi"
+            cpu: "24m"
+        
+        # Health checks (liveness and readiness probes)
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 3000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: 3000
+          initialDelaySeconds: 15
+          periodSeconds: 5
+        
+        # Environment variables from ConfigMap
+        env:
+        - name: APP_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: app-config     # Name of the ConfigMap
+              key: APP_NAME         # Key in the ConfigMap
+
+        - name: APP_VERSION
+          valueFrom:
+            configMapKeyRef:
+              name: app-config     # Name of the ConfigMap
+              key: APP_VERSION      # Key in the ConfigMap
