@@ -20,6 +20,7 @@ pipeline {
                         // withCredentials script generator of Jenkins
                         withCredentials([file(credentialsId: 'gcloud-service-account', variable: 'GCLOUD_CREDENTIALS_FILE')]) {
                             sh ''' gcloud auth activate-service-account --key-file="$GCLOUD_CREDENTIALS_FILE" 
+                                   echo $GCLOUD_CREDENTIALS_FILE
                                    gcloud container clusters get-credentials eds-devops-task-eds-gke --region europe-central2 --project edstem-task                                   
                             '''
                         }
