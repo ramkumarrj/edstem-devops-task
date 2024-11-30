@@ -24,7 +24,7 @@ pipeline {
                             '''
                         }
                     } else {
-                        echo "Google Cloud Authentication Skipped"http://34.118.9.210:8080/
+                        echo "Google Cloud Authentication Skipped"
                     }
                 }
             }
