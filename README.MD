@@ -1,4 +1,4 @@
-# Part 1: Infrastructure Setup
+#  Infrastructure Setup
 
 This repository contains Terraform configurations for managing Google Cloud Platform (GCP) resources. The structure is organized into modules for better maintainability and scalability.
 
@@ -132,7 +132,7 @@ This repository contains Terraform configurations for managing Google Cloud Plat
 
 
 
-# Kubernetes Deployment for GCP Node.js Application
+# Part 2: Application Containerization & Kubernetes Setup
 
 This repository contains Kubernetes configuration files for deploying a Node.js application on Google Cloud Platform (GCP). The setup includes a ConfigMap, Deployment, Horizontal Pod Autoscaler (HPA), and a LoadBalancer Service.
 
@@ -243,7 +243,7 @@ This is a simple Node.js application built using Express. It serves a welcome pa
   GET /health: Returns OK for liveness checks.
   GET /ready: Returns Ready for readiness checks.
 
-# Jenkins Pipeline for Node.js Application Deployment
+# Part 3: CI/CD Pipeline
 
 ## Overview
 This project contains a Jenkins pipeline script designed to automate the deployment of a Node.js application to Google Cloud Kubernetes. The pipeline includes stages for checking out source code, authenticating with Google Cloud, building and pushing Docker images, and deploying the application to Kubernetes.

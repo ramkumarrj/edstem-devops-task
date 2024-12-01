@@ -23,11 +23,11 @@ spec:
         # Resource requests and limits
         resources:
           requests:
-            memory: "12Mi"
-            cpu: "12m"
+            memory: "256Mi"
+            cpu: "256m"
           limits:
-            memory: "24Mi"
-            cpu: "24m"
+            memory: "512Mi"
+            cpu: "512m"
         
         # Health checks (liveness and readiness probes)
         livenessProbe:

@@ -15,4 +15,4 @@ spec:
         name: cpu              # Metric type (CPU)
         target:
           type: Utilization
-          averageUtilization: 90 # Target average CPU utilization percentage
+          averageUtilization: 50 # Target average CPU utilization percentage
