@@ -3,8 +3,6 @@ const app = express();
 // const dotenv = require('dotenv');
 require('dotenv').config();
 
-
-
 // Read environment variables from ConfigMap (populated in Kubernetes)
 const appName = process.env.APP_NAME || "testing purpose";;
 const appVersion = process.env.APP_VERSION || "4.0.0";;
