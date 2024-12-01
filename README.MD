@@ -3,42 +3,42 @@
 This repository contains Terraform configurations for managing Google Cloud Platform (GCP) resources. The structure is organized into modules for better maintainability and scalability.
 
 ## Directory Structure
-
-eds-terraform-gcp
-└── devops
-└── task
-├── main.tf
-├── terraform.tfvars.json
-└── variables.tf
-gcp-resources-code
-└── gcpmodules
-├── custom_networking
-│ ├── main.tf
-│ └── variables.tf
-├── iam_and_security
-│ ├── service_account_json
-│ │ ├── custom_roles
-│ │ │ ├── main.tf
-│ │ │ └── variables.tf
-│ │ ├── role_bindings
-│ │ │ ├── main.tf
-│ │ │ └── variables.tf
-│ │ └── service_account
-│ │ ├── main.tf
-│ │ ├── output.tf
-│ │ └── variables.tf
-│ └── service_account_tfvars
-│ ├── role_bindings_tfvars
-│ │ ├── main.tf
-│ │ └── variables.tf
-│ └── service_accounts_tfvars
-│ ├── main.tf
-│ ├── output.tf
-│ └── variables.tf
-└── kubernetes_cluster
-├── main.tf
-└── variables.tf
-
+```bash
+      eds-terraform-gcp
+      └── devops
+      └── task
+      ├── main.tf
+      ├── terraform.tfvars.json
+      └── variables.tf
+      gcp-resources-code
+      └── gcpmodules
+      ├── custom_networking
+      │ ├── main.tf
+      │ └── variables.tf
+      ├── iam_and_security
+      │ ├── service_account_json
+      │ │ ├── custom_roles
+      │ │ │ ├── main.tf
+      │ │ │ └── variables.tf
+      │ │ ├── role_bindings
+      │ │ │ ├── main.tf
+      │ │ │ └── variables.tf
+      │ │ └── service_account
+      │ │ ├── main.tf
+      │ │ ├── output.tf
+      │ │ └── variables.tf
+      │ └── service_account_tfvars
+      │ ├── role_bindings_tfvars
+      │ │ ├── main.tf
+      │ │ └── variables.tf
+      │ └── service_accounts_tfvars
+      │ ├── main.tf
+      │ ├── output.tf
+      │ └── variables.tf
+      └── kubernetes_cluster
+      ├── main.tf
+      └── variables.tf
+```
 
 ## Explanation of the Structure
 
@@ -105,26 +105,30 @@ gcp-resources-code
     - https://console.cloud.google.com/apis/api/container.googleapis.com/metrics?project=edstem-task
 
 ### Add the Gcloud key or update the Provider block
-        ```bash
+  ```bash
    eds-terraform-gcp -> devops -> task -> main.tf -> credentials = file("../../../../../edstem-task.json")
+  ``` 
 
 1. Clone this repository:
-   ```bash
+```bash
    git clone <repository-url>
    cd eds-terraform-gcp/gcp-resources-code/gcpmodules/task/
+```
 
 2. Initialize Terraform:
-    ```bash
+```bash
     terraform init
+```
 
 3. Validate the configuration:
-    ```bash
+```bash
     terraform validate
+```
 
 4. Apply the configuration:
-    ```bash
+```bash
     terraform apply
-
+```
 
 
 
@@ -147,11 +151,13 @@ This repository contains Kubernetes configuration files for deploying a Node.js 
 The Kubernetes setup is designed to manage the deployment of a Node.js application efficiently. It utilizes best practices such as environment variable management through ConfigMaps, resource allocation, health checks, and autoscaling based on CPU utilization.
 
 ## Directory Structure
-kubernetes/
-├── configmap.yaml
-├── deployment.yaml
-├── hpa.yaml
-└── service.yaml
+```bash
+    kubernetes/
+    ├── configmap.yaml
+    ├── deployment.yaml
+    ├── hpa.yaml
+    └── service.yaml
+```
 
 ### Components
 
@@ -175,26 +181,31 @@ kubernetes/
   To deploy the application in your Kubernetes cluster, follow these steps:
 
 1) Apply the ConfigMap:
-  ```bash
+```bash
   kubectl apply -f configmap.yaml
+```
 
 2) Deploy the Application:
-  ```bash
+```bash
   kubectl apply -f deployment.yaml
+```
 
 3) Set Up Horizontal Pod Autoscaler:
-  ```bash
+```bash
   kubectl apply -f hpa.yaml
+```
 
 4) Expose the Application:
-  ```bash
+```bash
   kubectl apply -f service.yaml
+```
 
 5) Check Status:
-  ```bash
+```bash
   kubectl get deployments 
   kubectl get services 
   kubectl get hpa 
+```
 
 
 # My Node.js Application
@@ -213,17 +224,19 @@ This is a simple Node.js application built using Express. It serves a welcome pa
 
 ## Installation
 * Clone the repository:
-   ```bash
+```bash
    git clone https://github.com/yourusername/myapp.git
    cd myapp
    npm install
-    node app.js
+   node app.js
+```
 
 ## Running with Docker
 -- To build and run the application in a Docker container, follow these steps:
 * Build the Docker image:
 ```bash
   docker build -t nodeapp:1.0 -f DockerFile.mynodeapp  .
+```
 
 ## Endpoints
   GET /: Displays a welcome message.
