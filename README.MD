@@ -275,7 +275,7 @@ The pipeline uses a configuration file named `config.properties`. Below is an ex
   Docker_Build_Push=yes
   Fresh_Deploy_nodeapp=yes
   Update_Deploy_nodeapp=no
-
+```
 
 Configuration Options:
   * GCloud_Auth: Set to yes to enable Google Cloud authentication.
