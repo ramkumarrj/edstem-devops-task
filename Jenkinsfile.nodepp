@@ -53,27 +53,26 @@ pipeline {
             }
         }
         
-        stage('Security_Scan') {
-            steps {
-                script {
-                    readProb = readProperties file:'config.properties'
-                    Run_Security_Scan = "${readProb['Run_Security_Scan']}"
+        // stage('Security_Scan') {
+        //     steps {
+        //         script {
+        //             readProb = readProperties file:'config.properties'
+        //             Run_Security_Scan = "${readProb['Run_Security_Scan']}"
                     
-                    if (Run_Security_Scan == 'yes') {
-                        // Assuming Sysdig Secure plugin is installed and configured
-                        sysdigImageScan(
-                            engineCredentialsId: 'sysdig-secure-api-token', // Your Sysdig API token credentials ID
-                            imageName: "europe-central2-docker.pkg.dev/edstem-task/expressjsapp/gcpnodeapp:$BUILD_NUMBER",
-                            bailOnFail: true // Fail the build if vulnerabilities are found
-                        )
-                       // slackSend(color: "good", message: "Security scan completed successfully.")
-                    } else {
-                        echo "Security scan stage skipped."
-                      //  slackSend(color: "warning", message: "Security scan stage was skipped.")
-                    }
-                }
-            }
-        }
+        //             if (Run_Security_Scan == 'yes') {
+        //                 sysdigImageScan(
+        //                     engineCredentialsId: 'sysdig-secure-api-token',
+        //                     imageName: "europe-central2-docker.pkg.dev/edstem-task/expressjsapp/gcpnodeapp:$BUILD_NUMBER",
+        //                     bailOnFail: true // Fail the build if vulnerabilities are found
+        //                 )
+        //                // slackSend(color: "good", message: "Security scan completed successfully.")
+        //             } else {
+        //                 echo "Security scan stage skipped."
+        //               //  slackSend(color: "warning", message: "Security scan stage was skipped.")
+        //             }
+        //         }
+        //     }
+        // }
 
         stage('Test') {
             steps {

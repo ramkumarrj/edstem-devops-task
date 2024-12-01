@@ -6,8 +6,8 @@ require('dotenv').config();
 
 
 // Read environment variables from ConfigMap (populated in Kubernetes)
-const appName = process.env.APP_NAME ;
-const appVersion = process.env.APP_VERSION;
+const appName = process.env.APP_NAME || "testing purpose";;
+const appVersion = process.env.APP_VERSION || "4.0.0";;
 
 // Define a route for the welcome page
 app.get('/', (req, res) => {
