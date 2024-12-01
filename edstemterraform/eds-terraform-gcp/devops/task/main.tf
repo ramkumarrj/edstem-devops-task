@@ -8,7 +8,7 @@ terraform {
 }
 
 provider "google" {
-  credentials = file("../../../../edstem-task.json")
+  credentials = file("../../../../../edstem-task.json")
   project     = "edstem-task"
 }
 
