@@ -64,10 +64,9 @@ pipeline {
                         sysdigImageScan(
                             engineCredentialsId: 'sysdig-secure-api-token', // Your Sysdig API token credentials ID
                             imageName: "europe-central2-docker.pkg.dev/edstem-task/expressjsapp/gcpnodeapp:$BUILD_NUMBER",
-                            policiesToApply: 'my-custom-policy', // Optional, specify your policies
                             bailOnFail: true // Fail the build if vulnerabilities are found
                         )
-                        slackSend(color: "good", message: "Security scan completed successfully.")
+                       // slackSend(color: "good", message: "Security scan completed successfully.")
                     } else {
                         echo "Security scan stage skipped."
                       //  slackSend(color: "warning", message: "Security scan stage was skipped.")
@@ -75,7 +74,6 @@ pipeline {
                 }
             }
         }
-
 
         stage('Test') {
             steps {
@@ -89,7 +87,7 @@ pipeline {
                             npm install  # Install dependencies
                             npm test     # Run tests
                         '''
-                        slackSend(color: "good", message: "All tests completed successfully.")
+                       // slackSend(color: "good", message: "All tests completed successfully.")
                     } else {
                         echo "Test stage skipped."
                        // slackSend(color: "warning", message: "Test stage was skipped.")
