@@ -8,6 +8,7 @@ pipeline {
         stage('SCM_Checkout_For_nodeapp') { 
             steps {
                 checkout scmGit(branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[credentialsId: 'ramkumar-github-nodeapp', url: 'https://github.com/ramkumarrj/edstem-devops-task.git']])
+                //slackSend(color: "good", message: "SCM Checkout completed successfully.")
             }
         }
         stage('Google Cloud Authentication') {
@@ -17,14 +18,15 @@ pipeline {
                     GCloud_Auth= "${readProb['GCloud_Auth']}"
                     
                     if (GCloud_Auth == 'yes') {
-                        // withCredentials script generator of Jenkins
                         withCredentials([file(credentialsId: 'gcloud-service-account', variable: 'GCLOUD_CREDENTIALS_FILE')]) {
                             sh ''' gcloud auth activate-service-account --key-file="$GCLOUD_CREDENTIALS_FILE" 
                                    gcloud container clusters get-credentials eds-devops-task-eds-gke --region europe-central2 --project edstem-task                                   
                             '''
+                            //slackSend(color: "good", message: "Google Cloud Authentication successful.")
                         }
                     } else {
                         echo "Google Cloud Authentication Skipped"
+                        //slackSend(color: "warning", message: "Google Cloud Authentication was skipped.")
                     }
                 }
             }
@@ -42,13 +44,59 @@ pipeline {
                             docker push europe-central2-docker.pkg.dev/edstem-task/expressjsapp/gcpnodeapp:$BUILD_NUMBER                             
                             sudo docker rmi europe-central2-docker.pkg.dev/edstem-task/expressjsapp/gcpnodeapp:$BUILD_NUMBER              
                             '''
+                        //slackSend(color: "good", message: "Docker build and push completed successfully.")
                     } else {
                         echo "Docker_Build_and_Push_Skipped"
+                        //slackSend(color: "warning", message: "Docker build and push was skipped.")
                     }
                 }            
             }
         }
         
+        stage('Security_Scan') {
+            steps {
+                script {
+                    readProb = readProperties file:'config.properties'
+                    Run_Security_Scan = "${readProb['Run_Security_Scan']}"
+                    
+                    if (Run_Security_Scan == 'yes') {
+                        // Assuming Sysdig Secure plugin is installed and configured
+                        sysdigImageScan(
+                            engineCredentialsId: 'sysdig-secure-api-token', // Your Sysdig API token credentials ID
+                            imageName: "europe-central2-docker.pkg.dev/edstem-task/expressjsapp/gcpnodeapp:$BUILD_NUMBER",
+                            policiesToApply: 'my-custom-policy', // Optional, specify your policies
+                            bailOnFail: true // Fail the build if vulnerabilities are found
+                        )
+                        slackSend(color: "good", message: "Security scan completed successfully.")
+                    } else {
+                        echo "Security scan stage skipped."
+                      //  slackSend(color: "warning", message: "Security scan stage was skipped.")
+                    }
+                }
+            }
+        }
+
+
+        stage('Test') {
+            steps {
+                script {
+                    readProb = readProperties file:'config.properties'
+                    Run_Tests = "${readProb['Run_Tests']}"
+                    
+                    if (Run_Tests == 'yes') {
+                        sh '''
+                            # Run your test commands here
+                            npm install  # Install dependencies
+                            npm test     # Run tests
+                        '''
+                        slackSend(color: "good", message: "All tests completed successfully.")
+                    } else {
+                        echo "Test stage skipped."
+                       // slackSend(color: "warning", message: "Test stage was skipped.")
+                    }
+                }
+            }
+        }
         stage('Fresh_Deployment_Kubernetes_nodeapp') {
             steps {
                 script {
@@ -60,8 +108,10 @@ pipeline {
                             sed -i s/latest/$BUILD_NUMBER/g kubernetes/deployment.yaml
                             kubectl apply -f kubernetes/
                         '''
+                        //slackSend(color: "good", message: "Fresh deployment to Kubernetes completed successfully.")
                     } else {
                         echo "Fresh-Deployment-Skipped"
+                        //slackSend(color: "warning", message: "Fresh deployment to Kubernetes was skipped.")
                     }
                 }
             }
@@ -74,8 +124,10 @@ pipeline {
                     
                     if (Update_Deploy_nodeapp == 'yes') {
                         sh ''' kubectl set image deployment/gcpnodeapp-deployment gcpnodeapp=europe-central2-docker.pkg.dev/edstem-task/expressjsapp/gcpnodeapp:$BUILD_NUMBER '''
+                        //slackSend(color: "good", message: "Update deployment in Kubernetes completed successfully.")
                     } else {
                         echo "Update-Deployment-Skipped"
+                        //slackSend(color: "warning", message: "Update deployment in Kubernetes was skipped.")
                     }
                 }
             }
