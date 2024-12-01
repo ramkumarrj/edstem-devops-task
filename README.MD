@@ -4,40 +4,40 @@ This repository contains Terraform configurations for managing Google Cloud Plat
 
 ## Directory Structure
 ```bash
-      eds-terraform-gcp
-      └── devops
-      └── task
-      ├── main.tf
-      ├── terraform.tfvars.json
-      └── variables.tf
+      eds-terraform-gcp/
+      └── devops/
+      └── task/
+      ├──── main.tf
+      ├──── terraform.tfvars.json
+      └──── variables.tf
       gcp-resources-code
-      └── gcpmodules
-      ├── custom_networking
+      └── gcpmodules/
+      ├── custom_networking/
       │ ├── main.tf
       │ └── variables.tf
-      ├── iam_and_security
-      │ ├── service_account_json
-      │ │ ├── custom_roles
+      ├── iam_and_security/
+      │ ├── service_account_json/
+      │ │ ├── custom_roles/
       │ │ │ ├── main.tf
       │ │ │ └── variables.tf
-      │ │ ├── role_bindings
+      │ │ ├── role_bindings/
       │ │ │ ├── main.tf
       │ │ │ └── variables.tf
-      │ │ └── service_account
+      │ │ └── service_account/
+      │ │ ├──── main.tf
+      │ │ ├──── output.tf
+      │ │ └──── variables.tf
+      │ └── service_account_tfvars/
+      │ ├── role_bindings_tfvars/
       │ │ ├── main.tf
-      │ │ ├── output.tf
       │ │ └── variables.tf
-      │ └── service_account_tfvars
-      │ ├── role_bindings_tfvars
-      │ │ ├── main.tf
-      │ │ └── variables.tf
-      │ └── service_accounts_tfvars
-      │ ├── main.tf
-      │ ├── output.tf
-      │ └── variables.tf
-      └── kubernetes_cluster
-      ├── main.tf
-      └── variables.tf
+      │ └── service_accounts_tfvars/
+      │ ├──── main.tf
+      │ ├──── output.tf
+      │ └──── variables.tf
+      └── kubernetes_cluster/
+      ├──── main.tf
+      └──── variables.tf
 ```
 
 ## Explanation of the Structure
