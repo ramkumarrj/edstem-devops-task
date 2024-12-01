@@ -9,6 +9,7 @@ COPY ./myapp/package.json .
 
 # Install the application dependencies
 RUN npm install
+RUN npm test
 
 # Copy Remaining Code
 COPY ./myapp/* .

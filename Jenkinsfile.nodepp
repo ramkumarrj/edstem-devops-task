@@ -73,27 +73,7 @@ pipeline {
         //         }
         //     }
         // }
-
-        stage('Test') {
-            steps {
-                script {
-                    readProb = readProperties file:'config.properties'
-                    Run_Tests = "${readProb['Run_Tests']}"
-                    
-                    if (Run_Tests == 'yes') {
-                        sh '''
-                            # Run your test commands here
-                            npm install  # Install dependencies
-                            npm test     # Run tests
-                        '''
-                       // slackSend(color: "good", message: "All tests completed successfully.")
-                    } else {
-                        echo "Test stage skipped."
-                       // slackSend(color: "warning", message: "Test stage was skipped.")
-                    }
-                }
-            }
-        }
+        
         stage('Fresh_Deployment_Kubernetes_nodeapp') {
             steps {
                 script {
