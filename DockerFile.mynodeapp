@@ -9,10 +9,12 @@ COPY ./myapp/package.json .
 
 # Install the application dependencies
 RUN npm install
-RUN npm test
 
 # Copy Remaining Code
 COPY ./myapp/* .
+
+#App Test
+RUN npm test
 
 # Update .env Variable
 COPY ./myapp/env .env
