@@ -112,7 +112,7 @@ This repository contains Terraform configurations for managing Google Cloud Plat
 1. Clone this repository:
 ```bash
    git clone <repository-url>
-   cd eds-terraform-gcp/gcp-resources-code/gcpmodules/task/
+   cd edstemterraform/eds-terraform-gcp/devops/task/
 ```
 
 2. Initialize Terraform:
